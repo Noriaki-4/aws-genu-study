@@ -232,7 +232,6 @@ aws-genu-study/
 │
 ├── docs/                       # ドキュメント (mkdocs)
 │   └── mydocs/                 #   ← このファイルの場所
-├── my-textbook/                # 学習用教科書 (react / cdk)
 └── browser-extension/          # ブラウザ拡張
 ```
 
@@ -241,5 +240,3 @@ aws-genu-study/
 ## 関連資料
 - インフラ構成図: [../assets/images/arch.drawio.png](../assets/images/arch.drawio.png)
 - 閉域網構成図: [../assets/images/arch-closed-network.drawio.png](../assets/images/arch-closed-network.drawio.png)
-- CDK学習教科書: [../../my-textbook/cdk/README.md](../../my-textbook/cdk/README.md)
-- React学習教科書: [../../my-textbook/react/README.md](../../my-textbook/react/README.md)
