@@ -100,7 +100,7 @@ graph TD
     main --> app
 
     app --> pages
-    subgraph pages["pages/ (26画面)"]
+    subgraph pages["pages/ (約34ファイル)"]
         chat["ChatPage"]
         rag["RagPage / RagKnowledgeBasePage"]
         img["GenerateImagePage"]
@@ -111,12 +111,12 @@ graph TD
     pages --> components
     pages --> hooks
 
-    subgraph components["components/ (67+)"]
+    subgraph components["components/ (約137ファイル)"]
         ui["Button/Card/... 汎用UI"]
         feature["Mermaid / ECharts / Writer<br/>機能別UI"]
     end
 
-    subgraph hooks["hooks/ (63)"]
+    subgraph hooks["hooks/ (約68ファイル)"]
         state["状態管理系<br/>useChat / useDrawer (Zustand)"]
         api["API系<br/>useChatApi / useFileApi …"]
         util["ユーティリティ系<br/>useHttp / useLocalStorage …"]
@@ -124,7 +124,7 @@ graph TD
 
     hooks --> shared
     subgraph shared["共有"]
-        types2["@types/generative-ai-use-cases"]
+        types2["generative-ai-use-cases 型定義"]
         common2["@generative-ai-use-cases/common"]
     end
 
@@ -179,7 +179,7 @@ graph TD
     end
 
     apiC --> lambdas
-    subgraph lambdas["lambda/ (48関数)"]
+    subgraph lambdas["lambda/ (トップレベル約42 .ts / 配下全体 約96 .ts)"]
         predict["predictStream.ts<br/>LLM呼び出し(ストリーム)"]
         crud["createChat / listChats …<br/>チャット履歴CRUD"]
         file["getFileUploadSignedUrl …<br/>ファイル操作"]
@@ -211,9 +211,9 @@ aws-genu-study/
 │   │   └── src/
 │   │       ├── main.tsx        #   エントリポイント
 │   │       ├── App.tsx         #   ルーティング
-│   │       ├── pages/          #   画面 (ユースケース単位, 26枚)
-│   │       ├── components/     #   UI部品 (67+)
-│   │       ├── hooks/          #   ロジック (状態/API/ユーティリティ, 63)
+│   │       ├── pages/          #   画面 (ユースケース単位, 約34ファイル)
+│   │       ├── components/     #   UI部品 (約137ファイル)
+│   │       ├── hooks/          #   ロジック (状態/API/ユーティリティ, 約68ファイル)
 │   │       ├── prompts/        #   プロンプト定義
 │   │       ├── i18n/           #   多言語辞書
 │   │       └── utils/          #   汎用関数
@@ -224,7 +224,7 @@ aws-genu-study/
 │   │   │   ├── *-stack.ts      #   スタック (デプロイ単位)
 │   │   │   ├── construct/      #   構成部品 (API/認証/DB…)
 │   │   │   └── stack-input.ts  #   パラメータ検証
-│   │   └── lambda/             #   Lambda関数 (48)
+│   │   └── lambda/             #   Lambda処理 (トップレベル約42 .ts / 配下全体 約96 .ts)
 │   │
 │   ├── common/                 # フロント/バック共通ロジック
 │   ├── types/                  # 共有型定義 (.d.ts)
