@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_01_勤務制度_2025",
+    "org": "福祉部",
+    "category": "勤務制度",
+    "effective_from": "2025-04-01",
+    "effective_from_num": 20250401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "在宅勤務",
+      "時差出勤",
+      "服務",
+      "申請期限",
+      "上限"
+    ]
+  }
+}

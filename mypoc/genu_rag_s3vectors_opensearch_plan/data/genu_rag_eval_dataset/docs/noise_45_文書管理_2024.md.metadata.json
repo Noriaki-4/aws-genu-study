@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_45_文書管理_2024",
+    "org": "共通",
+    "category": "文書管理",
+    "effective_from": "2024-04-01",
+    "effective_from_num": 20240401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "会議資料",
+      "議事録",
+      "公開期限",
+      "黒塗り",
+      "保存形式"
+    ]
+  }
+}

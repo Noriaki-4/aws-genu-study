@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_60_AI基盤_2024",
+    "org": "共通",
+    "category": "AI基盤",
+    "effective_from": "2024-04-01",
+    "effective_from_num": 20240401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "SLA",
+      "応答時間",
+      "障害通知",
+      "再インデックス",
+      "バックアップ"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_04_AI基盤_2025",
+    "org": "危機管理課",
+    "category": "AI基盤",
+    "effective_from": "2025-04-01",
+    "effective_from_num": 20250401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "SLA",
+      "応答時間",
+      "障害通知",
+      "再インデックス",
+      "バックアップ"
+    ]
+  }
+}

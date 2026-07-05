@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_65_勤務制度_2026",
+    "org": "共通",
+    "category": "勤務制度",
+    "effective_from": "2026-04-01",
+    "effective_from_num": 20260401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "在宅勤務",
+      "時差出勤",
+      "服務",
+      "申請期限",
+      "上限"
+    ]
+  }
+}

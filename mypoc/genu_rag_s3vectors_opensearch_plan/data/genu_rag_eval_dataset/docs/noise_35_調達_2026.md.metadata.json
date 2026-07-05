@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_35_調達_2026",
+    "org": "共通",
+    "category": "調達",
+    "effective_from": "2026-04-01",
+    "effective_from_num": 20260401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "見積",
+      "入札",
+      "随意契約",
+      "予定価格",
+      "生成AI"
+    ]
+  }
+}

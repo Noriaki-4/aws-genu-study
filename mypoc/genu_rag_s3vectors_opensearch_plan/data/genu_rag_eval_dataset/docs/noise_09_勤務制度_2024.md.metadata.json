@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_09_勤務制度_2024",
+    "org": "危機管理課",
+    "category": "勤務制度",
+    "effective_from": "2024-04-01",
+    "effective_from_num": 20240401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "在宅勤務",
+      "時差出勤",
+      "服務",
+      "申請期限",
+      "上限"
+    ]
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_40_補助金_2025",
+    "org": "共通",
+    "category": "補助金",
+    "effective_from": "2025-04-01",
+    "effective_from_num": 20250401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "補助額",
+      "所得制限",
+      "申請期限",
+      "領収書",
+      "併給"
+    ]
+  }
+}

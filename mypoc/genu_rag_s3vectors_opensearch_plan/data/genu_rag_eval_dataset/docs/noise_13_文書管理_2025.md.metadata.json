@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_13_文書管理_2025",
+    "org": "情報システム部",
+    "category": "文書管理",
+    "effective_from": "2025-04-01",
+    "effective_from_num": 20250401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "会議資料",
+      "議事録",
+      "公開期限",
+      "黒塗り",
+      "保存形式"
+    ]
+  }
+}

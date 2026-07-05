@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_46_防災_2025",
+    "org": "福祉部",
+    "category": "防災",
+    "effective_from": "2025-04-01",
+    "effective_from_num": 20250401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "震度",
+      "参集",
+      "避難所",
+      "住民情報",
+      "外部提供"
+    ]
+  }
+}

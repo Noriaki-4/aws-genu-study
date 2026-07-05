@@ -1,0 +1,18 @@
+{
+  "metadataAttributes": {
+    "doc_id": "NOISE_66_経費_2024",
+    "org": "福祉部",
+    "category": "経費",
+    "effective_from": "2024-04-01",
+    "effective_from_num": 20240401,
+    "status": "old",
+    "dataset_role": "noise",
+    "topic_tags": [
+      "領収書",
+      "宿泊費",
+      "交通費",
+      "提出期限",
+      "年度末"
+    ]
+  }
+}
