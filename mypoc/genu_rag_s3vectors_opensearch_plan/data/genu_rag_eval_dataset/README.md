@@ -4,13 +4,13 @@
 
 AWS GenU + Bedrock Knowledge Bases で、S3 Vectors RAG と OpenSearch RAG の検索精度差を確認するためのデータです。
 
-## v3での改善点
+## v3までの改善点
 
-- ターゲット文書12件に加え、ノイズ文書72件を追加。
+- 正規ターゲット文書11件、旧版文書1件、ノイズ文書72件を用意。
 - v2で全ノイズ文書に入っていた共通キーワード備考を削除し、HYBRID検索への人工的な罰を避けた。
 - 旧版/新版、近似語、似た数値、似たカテゴリを混ぜ、検索差が出やすくした。
 - `effective_from` に加えて、数値比較用の `effective_from_num` を追加。
-- Q19の対象文書本文から `doc_id` 文字列を外し、メタデータ検索テストとして意味が出るようにした。
+- v2でQ19の対象文書本文から `doc_id` 文字列を外し、メタデータ検索テストとして意味が出るようにした。
 - 評価は `S3 Vectors semantic`、`OpenSearch semantic`、`OpenSearch hybrid` の3系統で記録する想定。
 
 ## 注意
@@ -43,6 +43,7 @@ hit_rank、retrieved_source_doc、citation_correctを見るために使います
 
 回答誤りを誘発する主な文書は、旧版の `11_near_duplicate_old_policy.md` です。
 ノイズ文書はテンプレート量産のため、現実の文書群より見分けやすい限界があります。
+旧版文書は `dataset_role = old_version` として、正規ターゲット文書とは区別しています。
 
 ## status と effective_from_num
 

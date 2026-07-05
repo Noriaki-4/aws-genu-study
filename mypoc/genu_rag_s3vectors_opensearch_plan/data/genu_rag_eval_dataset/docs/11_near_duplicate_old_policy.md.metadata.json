@@ -6,7 +6,7 @@
     "effective_from": "2025-04-01",
     "effective_from_num": 20250401,
     "status": "old",
-    "dataset_role": "target",
+    "dataset_role": "old_version",
     "topic_tags": []
   }
 }

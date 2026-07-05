@@ -10,6 +10,8 @@
   3. Bedrock Knowledge Bases + OpenSearch Serverless + hybrid search
 - GenUは大きく改造せず、まずはKnowledge Baseを切り替えてRAGの違いを確認する。
 - ただし、GenU標準UIで検索タイプやメタデータフィルタを自由に指定できない場合があるため、厳密な比較はBedrock Console/APIで行う。
+- S3 Vectors KBはBedrock Consoleの **Quick create a new vector store** を使う。
+- 評価用S3バケットは文書置き場であり、Quick createで作成されるS3 vector bucket / indexはベクトル保管先として別物である。
 
 ## 1. 最重要な注意: 小規模検証の限界とノイズ設計
 
@@ -29,7 +31,7 @@
 
 ### 1.2 ノイズ文書の役割
 
-v4では、ノイズ文書から `RAG`、`Knowledge Base`、`OpenSearch`、`S3 Vectors`、`ハイブリッド検索`、`doc_id` などを一律に含める備考文を削除した。
+v3では、ノイズ文書から `RAG`、`Knowledge Base`、`OpenSearch`、`S3 Vectors`、`ハイブリッド検索`、`doc_id` などを一律に含める備考文を削除した。
 これにより、Q18やQ19でOpenSearch HYBRIDだけが不自然に不利になるキーワード汚染を避ける。
 
 ノイズ文書の主な役割は **検索指標用** である。
@@ -67,25 +69,30 @@ v4では、ノイズ文書から `RAG`、`Knowledge Base`、`OpenSearch`、`S3 V
 ## 3. 全体構成
 
 ```text
-評価用S3バケット
-  └─ docs/
-      ├─ target docs
-      ├─ old version docs
-      └─ noise docs
+評価用S3バケット（文書置き場）
+  └─ genu-rag-eval/docs/
+      ├─ target docs (.md + .metadata.json)
+      ├─ old version docs (.md + .metadata.json)
+      └─ noise docs (.md + .metadata.json)
           ｜
           ├─ Bedrock Knowledge Base A
           │    └─ Vector store: S3 Vectors
-          │        └─ search type: SEMANTIC
+          │        ├─ Quick createされたS3 vector bucket / index
+          │        └─ search type: SEMANTICのみ
           │
           └─ Bedrock Knowledge Base B
                └─ Vector store: OpenSearch Serverless
+                   ├─ Bedrockに自動作成させるcollection / index
                    ├─ search type: SEMANTIC
                    └─ search type: HYBRID
 
 GenU RAG Chat
-  ├─ KB-Aを指定して質問
-  └─ KB-Bを指定して同じ質問
+  ├─ KB-A用のGenU環境、またはragKnowledgeBaseId差し替え再デプロイ
+  └─ KB-B用のGenU環境、またはragKnowledgeBaseId差し替え再デプロイ
 ```
+
+GenU標準UIは利用者体験、引用表示、体感レイテンシを見るために使う。
+`numberOfResults = 10` や `SEMANTIC/HYBRID` の厳密な比較はBedrock Console/APIで行う。
 
 ## 4. 比較対象の位置づけ
 
@@ -120,11 +127,16 @@ s3://<your-bucket>/genu-rag-eval/docs/
 |---|---|
 | Data source | S3 |
 | S3 path | `s3://<your-bucket>/genu-rag-eval/docs/` |
-| Vector store | S3 Vectors |
+| Vector store | S3 Vectors / S3 vector bucket |
+| Vector store作成 | Quick create a new vector store |
 | Search type | SEMANTIC |
 | Embedding model | 日本語対応・多言語対応モデル |
 | Chunking | まずはデフォルトまたは固定サイズ |
 | Metadata | `.metadata.json` を利用 |
+
+Quick createでは、BedrockがS3 vector bucketとvector indexを作成する。
+評価用S3バケットに置いた文書を読み込み、埋め込みはQuick createされたS3 vector indexに保存される。
+S3 Vectorsは **SEMANTICのみ** を評価対象とし、HYBRIDは指定しない。
 
 ### Step 3: OpenSearch用Knowledge Baseを作成
 
@@ -157,6 +169,7 @@ Bedrock ConsoleまたはAPIでData source syncを実行する。
 
 `numberOfResults` は **10固定** を推奨する。
 結果記録にも必ず残す。
+S3 Vectorsは **SEMANTICのみ**、OpenSearch Serverlessは **SEMANTIC/HYBRIDの両方** を評価する。
 
 ### Step 6: フィルタなし / フィルタありを比較
 
@@ -168,6 +181,14 @@ Bedrock ConsoleまたはAPIでData source syncを実行する。
 ### Step 7: GenU RAG Chatで確認
 
 Bedrock Console/APIで差分が見えたら、GenU側でKnowledge Baseを切り替えて同じ質問を流す。
+GenUのRAG Chatが参照するKnowledge Baseは、基本的に `ragKnowledgeBaseId` / `KNOWLEDGE_BASE_ID` で1つに決まる。
+そのため、比較時は以下のいずれかで確認する。
+
+1. S3 Vectors KB用とOpenSearch KB用にGenU環境を分ける。
+2. `ragKnowledgeBaseId` を差し替えて再デプロイし、同じ質問を流す。
+
+GenU標準UIで `numberOfResults = 10`、`overrideSearchType`、任意のメタデータフィルタを完全に固定できない場合がある。
+その場合、GenUでの結果は体験確認として扱い、採点はBedrock Console/APIの結果を正とする。
 
 GenUでは主に以下を見る。
 
@@ -188,10 +209,12 @@ GenUでは主に以下を見る。
 | `effective_from` | 適用開始日文字列 | `2026-04-01` |
 | `effective_from_num` | 適用開始日数値 | `20260401` |
 | `status` | 有効/旧版 | `active`, `old` |
-| `dataset_role` | target/noise | `target`, `noise` |
+| `dataset_role` | データセット上の役割 | `target`, `old_version`, `noise` |
 | `topic_tags` | 関連語 | `["RAG", "SLA"]` |
 
 `effective_from` はISO形式文字列でも辞書順が日付順と一致しやすいが、POCで型起因のノイズを避けるため、数値の `effective_from_num` を併記する。
+旧版文書は回答誤り誘発用のため、`dataset_role = old_version` として正規ターゲット文書から区別する。
+有効文書だけを評価対象にする場合は、`dataset_role = target` だけでなく `status = active` も確認する。
 
 ## 7. 試すべきフィルタ
 
@@ -274,7 +297,7 @@ Q19はこのフィルタを付けて評価する。
 
 ### 8.2 フィルタ検証
 
-全問×全フィルタは組み合わせが多すぎるため、v3では以下に絞って評価テンプレートに追加行を用意する。
+全問×全フィルタは組み合わせが多すぎるため、v4では以下に絞って評価テンプレートに追加行を用意する。
 
 | 質問 | フィルタ |
 |---|---|
@@ -335,10 +358,12 @@ Q19はこのフィルタを付けて評価する。
 ## 11. POC後の後始末
 
 OpenSearch Serverlessは最低OCU課金が発生する可能性があるため、POC終了後に以下を確認する。
+S3 VectorsもQuick createで作成されたS3 vector bucket / indexが残っていないか確認する。
+Knowledge Base削除時は、データ削除ポリシーが `Delete` か `Retain` かを確認し、保持されたリソースを手動削除する。
 
 - 不要なKnowledge Baseを削除
+- Quick createで作成されたS3 vector bucket / indexを削除
 - 不要なOpenSearch Serverless collectionを削除
-- 不要なS3 Vector bucket / indexを削除
 - S3評価データを削除
 - CloudWatch Logsや一時IAM Roleを確認
 - コストエクスプローラーで当日〜翌日の費用を確認
